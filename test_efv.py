@@ -63,8 +63,8 @@ def test_ener (dp,system,set_prefix='set',numb_test=100000,shuffle_test=False,ra
 
 
     if detail_file is not None :
-        pe = np.concatenate((np.reshape(test_data["energy"][:numb_test], [-1,1]),
-                             np.reshape(energy, [-1,1])), 
+        pe = np.concatenate((np.reshape(test_data["energy"][:numb_test]/natoms, [-1,1]),
+                             np.reshape(energy/natoms, [-1,1])), 
                             axis = 1)
         np.savetxt(detail_file+".e.out", pe, 
                    header = 'data_e pred_e')
@@ -82,6 +82,11 @@ def test_ener (dp,system,set_prefix='set',numb_test=100000,shuffle_test=False,ra
 
 
 if __name__=="__main__":
+    import os
+    if os.path.isdir('ret'):
+        pass
+    else:
+        os.mkdirt('ret')
     model="frozen_model.pb"
     print ("#Index Ntest  E_L2err  E_L2err/Natoms  F_L2err V_L2err V_L2err/Natoms")
     dp = DeepPot(model)
