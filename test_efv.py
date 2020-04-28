@@ -86,7 +86,7 @@ if __name__=="__main__":
     if os.path.isdir('ret'):
         pass
     else:
-        os.mkdirt('ret')
+        os.mkdir('ret')
     model="frozen_model.pb"
     print ("#Index Ntest  E_L2err  E_L2err/Natoms  F_L2err V_L2err V_L2err/Natoms")
     dp = DeepPot(model)
