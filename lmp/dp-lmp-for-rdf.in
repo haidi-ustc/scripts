@@ -1,0 +1,57 @@
+#
+units metal
+boundary p p p
+atom_style atomic
+read_data lmp.conf
+reset_timestep 0
+
+mass            1  6.941
+
+group Li type 1
+
+pair_style      deepmd   8m_fitnet_180x180x180_emb_20x50x100_Li.pb
+pair_coeff
+
+neighbor 2 bin
+neigh_modify delay 0 every 10 check yes
+
+compute pea1 all pe/atom
+compute kea1 all ke/atom
+compute fa1  all property/atom fx fy fz
+
+velocity all create 800 12345678 dist gaussian
+timestep 0.002
+
+dump 1 all custom 500 dump_npt_800.atom id type x y z c_pea1 c_kea1 c_fa1[*]
+dump_modify 1 flush yes sort id
+fix 1 all npt temp 800 800 0.5 iso 0.0 0.0 5.0
+thermo 100
+thermo_style custom step temp press pe ke vol lx
+thermo_modify lost error flush yes
+run  50000
+
+unfix 1
+undump 1
+restart 0
+
+dump 2 all custom 500 dump_npt_470.atom id type x y z c_pea1 c_kea1 c_fa1[*]
+dump_modify 2 flush yes sort id
+fix 2 all npt temp 470.15 470.15 0.5 iso 0.0 0.0 5.0
+thermo 100
+thermo_style custom step temp press pe ke vol lx
+thermo_modify lost error flush yes
+run  10000
+
+unfix 2
+undump 2
+restart 0
+
+dump 3 all custom 100 dump_nvt_470.atom id type x y z c_pea1 c_kea1 c_fa1[*]
+dump_modify 3 flush yes sort id
+fix 3 all nvt temp 470.15 470.15 0.5
+thermo 100
+thermo_style custom step temp press pe ke vol lx
+thermo_modify lost error flush yes
+
+restart 10000  hold500nvt
+run  150000
