@@ -1,0 +1,33 @@
+#Parameters
+SYSTEM  =  dpgen
+PREC    =  Accurate
+ISART   =  0
+ICHARG  =  2
+#Electronic Relaxation 
+ENCUT   =  650
+NELM    =  100
+NELMIN  =  6
+NELMDL  =  -5
+EDIFF   =  1e-06
+LREAL   =  False
+ALGO    =   Fast  # or normal
+#Ionic relaxation
+IBRION  =   -1
+#POTIM   =  0.3
+#ISIF    =   3
+#EDIFFG  =  -0.01
+ISYM    =   0
+NSW     =   0
+ISMEAR  =  1
+SIGMA   =  0.22
+# Write flags
+LWAVE    =  False
+LCHARG   =  False
+#parallel related
+#KPAR   = 16
+NPAR    =  7
+KPAR = 4
+KSPACING = 0.1
+KGAMMA  = False
+
+PSTRESS = 0.0
