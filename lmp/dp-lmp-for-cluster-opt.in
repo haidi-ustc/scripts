@@ -1,0 +1,30 @@
+#lmp input
+clear
+units 	metal
+dimension	3
+boundary	f f f
+atom_style	atomic
+box         tilt large
+read_data   data.lammps
+neigh_modify    every 1 delay 0 check no
+mass            1 196.96655
+
+pair_style      deepmd frozen_model_Au_65.pb
+pair_coeff
+compute         mype all pe
+thermo          100
+thermo_style    custom step pe pxx pyy pzz pxy pxz pyz lx ly lz vol c_mype
+min_style       cg
+minimize        1.000000e-12 1.000000e-06 5000 500000
+
+run             1
+dump            1  all atom 1  relax.lammpstrj
+dump            2  all custom 1  dump.obstacle  xu yu zu x y z ix iy iz
+variable        enth equal enthalpy
+variable        press equal press
+thermo          100
+thermo_style    custom step temp etotal press vol enthalpy cella cellb cellc cellalpha cellbeta cellgamma
+run             0
+print           "Enthalpy= ${enth}"
+print           "Pressure= ${press}"
+
