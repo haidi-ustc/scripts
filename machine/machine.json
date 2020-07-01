@@ -1,0 +1,86 @@
+{
+  "train": [
+    {
+      "machine": {
+        "batch": "slurm",
+        "hostname": "",
+        "port": 22,
+        "username": "haidi",
+        "work_path": "/fs0/home/haidi/work/Au/runvasp/work"
+      },
+      "resources": {
+        "numb_gpu": 1,              
+        "numb_node": 1,
+        "task_per_node": 30,
+        "partition": "gpu4",         
+        "exclude_list": [],
+        "_mem_limit": 28,
+        "source_list": [],
+        "module_list": [],
+        "task_max": 200,
+        "time_limit": "48:0:0"
+      },
+      "command": "/fs0/home/haidi/soft/deepmd-kit-gpu-1.2.0/bin/dp",
+      "group_size": 1
+    }
+  ],
+
+  "model_devi": [
+    {
+      "machine": {
+        "batch": "slurm",
+        "hostname": "",
+        "port": 22,
+        "username": "haidi",
+        "work_path": "/fs0/home/haidi/work/Au/runvasp/work"
+      },
+      "resources": {
+        "numb_gpu": 1,
+        "numb_node": 1,
+        "task_per_node": 4,
+        "partition": "gpu4",
+        "exclude_list": [],
+        "_mem_limit": 28,
+        "source_list": [],
+        "module_list": [],
+        "task_max": 100,
+        "time_limit": "23:0:0",
+        "envs" : {
+                  "TF_INTRA_OP_PARALLELISM_THREADS":1,
+                  "TF_INTER_OP_PARALLELISM_THREADS":1,
+                  "OMP_NUM_THREADS":4   
+                }
+      },
+      "command": "/fs0/home/haidi/soft/deepmd-kit-gpu-1.2.0/bin/lmp",
+      "group_size": 10
+    }
+  ],
+
+  "fp": [
+    {
+      "machine": {
+        "batch": "slurm",
+        "hostname": "",
+        "port": 22,
+        "username": "haidi",
+        "work_path": "/fs0/home/haidi/work/Au/runvasp/work"
+      },
+      "resources": {
+        "allow_failure": true,
+        "ratio_failue": 0.05,
+        "numb_node": 1,
+        "task_per_node": 40,
+        "partition": "cpu",
+        "with_mpi": false,
+        "task_max": 100,
+        "exclude_list": ["cu11","cu02"],
+        "time_limit": "48:0:0",
+        "source_list": ["/fs0/software/intel/2017u5/parallel_studio_xe_2017.5.061/psxevars.sh intel64"],
+        "envs" : {"PATH" : "/fs0/home/haidi/soft/vasp-5.4.4-2017u5/bin:$PATH"   }
+      },
+      "command": "mpirun -np 40 vasp_gam",
+      "group_size": 1
+    }
+  ]
+}
+
