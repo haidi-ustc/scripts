@@ -1,18 +1,27 @@
-# dp-scripts
+# scripts
 
 ```
 .
 ├── dp
 │   ├── ase_eval.py
+│   ├── batch_size.py
 │   ├── concatenate_evf.py
 │   ├── gen_cluster.py
+│   ├── input.json
+│   ├── labledsystem_to_entry.py
+│   ├── multi_sys_0d_filter.py
+│   ├── multi_sys_2d_filter.py
 │   ├── multi_sys.py
 │   ├── plot_ef.py
+│   ├── runvasp.py
 │   ├── single_sys.py
 │   └── test_efv.py
 ├── lmp
-│   └── dp-lmp-for-rdf.in
+│   ├── dp-lmp-for-cluster-opt.in
+│   ├── dp-lmp-for-rdf.in
+│   └── NPT-Melt_NPT-balance_NVT-balance.in
 ├── machine
+│   ├── machine.json
 │   └── nuaa.json
 ├── pku_input_set
 │   ├── INCAR_metal_md
@@ -41,10 +50,13 @@
 │   ├── proc.py
 │   └── test
 ├── pso
-│   └── proructure.py
+│   ├── input_cluster.dat
+│   └── proc_structure.py
 ├── README.md
 ├── shell
+│   ├── prepare_vasp_input.sh
 │   ├── slurm-MxN-tasks-submit.sh
+│   ├── slurm-submit-parallel.sh
 │   └── slurm-vasp-list-job.sh
 └── structure
     ├── ase_dp_opt.py
