@@ -1,0 +1,44 @@
+from pymatgen.io.gaussian import GaussianOutput 
+from pymatgen.io.cif import CifWriter
+from pymatgen import Structure
+import numpy as np
+from glob import glob
+from pprint import pprint
+import re
+from cif import CifWriter
+def proc_cif(fin,fout):
+   go=GaussianOutput(fin)
+   with open(fin,'r')  as f:
+        lines=f.read()
+   
+   pt=re.compile(r"ESP charges:\n\s*\d+\n((\s*\d+\s*\w+\s*[-]?\d*\.\d*\n)+)\s+Sum of")
+   ret=re.findall(pattern=pt,string=lines)
+   #print(ret[-1][0])
+   lines=ret[-1][0].strip().split('\n')
+   #print(lines)
+   data=[]
+   for line in lines:
+       d=line.split()
+       data.append([int(d[0]),str(d[1]),float(d[2])])
+   #pprint(data)
+   chg=tuple(d[2] for d in data)
+   mol=go.final_structure
+   mol.add_site_property('charge',chg)
+   gob=go.final_structure.get_boxed_structure(30,30,30)
+   #mst=Structure(np.eye(3)*20,mol.species,mol.cart_coords,coords_are_cartesian=True)
+   #print(gob)
+   #gob.to('cif','st.cif')
+   cw=CifWriter(gob)
+   cw.write_file(fout)
+
+fs=glob('hfn-13/*log')
+for f in fs:
+    print(f)
+    name1=f.split('/')[0]
+    name2=f.split('/')[-1]
+    #print(f.replace(name2,name1+'_charge.cif'))
+   # try:
+    proc_cif(f,f.replace(name2,name1+'_charge.cif'))
+   # except:
+   #   print('fail')
+#data=[[int(line.split()[0]),str(line.split()[1]),int(line.split()[2])] for line in lines.strip()]
